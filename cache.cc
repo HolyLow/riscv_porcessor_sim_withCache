@@ -100,9 +100,9 @@ void Cache::HandleRequest(uint64_t addr, int bytes, int read,
     else {
       // copy to content
 
-      for(int i = 0; i < bytes; i++)
+ /*     for(int i = 0; i < bytes; i++)
         content[i] = entry->block[i];
-      block = entry->block;
+  */    block = entry->block;
       hit = 1;
       time += latency_.bus_latency + latency_.hit_latency;
       stats_.access_time += time;
@@ -161,9 +161,9 @@ void Cache::HandleRequest(uint64_t addr, int bytes, int read,
       // write-through
       if (this->config_.write_through){
         // write current layer
-        for(int i = 0; i < bytes; i++)
+  /*      for(int i = 0; i < bytes; i++)
           entry->block[block_offset+i] = content[i];
-        // write to lower layer
+  */      // write to lower layer
         int lower_hit, lower_time;
         lower_->HandleRequest(addr, bytes, read, content,
                           lower_hit, lower_time, block);
@@ -174,9 +174,9 @@ void Cache::HandleRequest(uint64_t addr, int bytes, int read,
       // write-back
       else{
         // write current layer
-        for(int i = 0; i < bytes; i++)
+ /*       for(int i = 0; i < bytes; i++)
           entry->block[block_offset+i] = content[i];
-        hit = 1;
+ */       hit = 1;
         entry->write_back = TRUE;
         time += latency_.bus_latency + latency_.hit_latency;
         stats_.access_time += latency_.bus_latency + latency_.hit_latency;

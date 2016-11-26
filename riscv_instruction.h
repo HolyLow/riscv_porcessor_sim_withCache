@@ -1,12 +1,12 @@
 /*******************************************************************/
-/* To make it easy to add a new instruction, we define AND write   */
+/* To make it easy to add a new instruction, we define and write   */
 /* all the codes about instructions in file "riscv_instruction.h"  */
-/* for definition, AND in file "riscv_instruction.c" for           */
+/* for definition, and in file "riscv_instruction.c" for           */
 /* implementation. If you want to add a new instruction to our     */
 /* simulator, you could just simply follow the steps below:        */
 /*                                                                 */
 /*  1. Add the opcode of your new instruction(maybe your funct3    */
-/*     AND funct7 as well, if there are any conflict with current  */
+/*     and funct7 as well, if there are any conflict with current  */
 /*     opcodes) to the appropriate place(according to your         */
 /*     instruction type) in the function GetINSTYPE in             */
 /*     "riscv_instruction.c";                                      */
@@ -14,9 +14,9 @@
 /*     according to your instruction type. For example, if your    */
 /*     instruction is R_TYPE, then your are welcome to the         */
 /*     function R_Execute. You should add your entrance according  */
-/*     to your opcode, funct3, AND maybe funct7 as well;           */
+/*     to your opcode, funct3, and maybe funct7 as well;           */
 /*  3. Add the definition of your instruction to                   */
-/*     "riscv_instruction.h", AND your implementation to           */
+/*     "riscv_instruction.h", and your implementation to           */
 /*     "riscv_instruction.c".                                      */
 /* If you take the steps above correctly, your new instruction     */
 /* will work!                                                      */
@@ -125,7 +125,7 @@ void UJ_execute(Riscv64_decoder*, Riscv64_register*, Riscv64_memory*);
 /* functions for instructions  RV32I base    */
 /*                                           */
 /*********************************************/
-/* @param rd,rrs1,rrs2 stAND for the index of a register */
+/* @param rd,rrs1,rrs2 stand for the index of a register */
 
 /* Loads */
 void lb(Riscv64_register*, Riscv64_memory*, int rd, int rs1, int imm);  // byte
@@ -147,12 +147,12 @@ void lui(Riscv64_register*, Riscv64_memory*, int rd, int imm);       // load upp
 void auipc(Riscv64_register*, Riscv64_memory*, int rd, int imm);     // add upper immediate to pc
 
 /* Logical */
-void XOR(Riscv64_register*, int rd, int rs1, int rs2);        // xor
+void xorr(Riscv64_register*, int rd, int rs1, int rs2);        // xor
 void xori(Riscv64_register*, int rd, int rs1, int imm);       // xor immediate
-void OR(Riscv64_register*, int rd, int rs1, int rs2);         // or
+void orr(Riscv64_register*, int rd, int rs1, int rs2);         // or
 void ori(Riscv64_register*, int rd, int rs1, int imm);        // or immediate
-void AND(Riscv64_register*, int rd, int rs1, int rs2);        // AND
-void ANDi(Riscv64_register*, int rd, int rs1, int imm);       // AND immediate
+void andr(Riscv64_register*, int rd, int rs1, int rs2);        // and
+void andi(Riscv64_register*, int rd, int rs1, int imm);       // and immediate
 
 /* Shifts */
 void sll(Riscv64_register*, int rd, int rs1, int rs2);         // shift left
@@ -269,15 +269,33 @@ void fnmadd_S(Riscv64_register*, int rd, int rs1, int rs2, int rs3); // -(rs1*rs
 void fnmsub_S(Riscv64_register*, int rd, int rs1, int rs2, int rs3); // -(rs1*rs2-rs3)
 
 /* Type Conversion */
+void fcvt_S_L(Riscv64_register*, int rd, int rs1);
 void fcvt_W_S(Riscv64_register*, int rd, int rs1);  // single-precision fp   -> signed word(32-bit)
 void fcvt_WU_S(Riscv64_register*, int rd, int rs1); // single-precision fp   -> unsigned word(32-bit)
 void fcvt_S_W(Riscv64_register*, int rd, int rs1);  // signed word(32-bit)   -> single-precision fp
 void fcvt_S_WU(Riscv64_register*, int rd, int rs1); // unsigned word(32-bit) -> single-precision fp
 
+void fsgnj_S(Riscv64_register*, int rd, int rs1, int rs2);
+void fsgnjn_S(Riscv64_register*, int rd, int rs1, int rs2);
+void fsgnjx_S(Riscv64_register*, int rd, int rs1, int rs2);
+
+void fmv_X_S(Riscv64_register*, int rd, int rs1, int rs2);
+void fmv_S_X(Riscv64_register*, int rd, int rs1, int rs2);
+
 /* Compare */
 void feq_S(Riscv64_register*, int rd, int rs1, int rs2); // ==
 void flt_S(Riscv64_register*, int rd, int rs1, int rs2); // <
 void fle_S(Riscv64_register*, int rd, int rs1, int rs2); // <=
+
+/*********************************************/
+/*                                           */
+/* functions for instructions RV64F          */
+/*                                           */
+/*********************************************/
+void fcvt_L_S(Riscv64_register*, int rd, int rs1);
+void fcvt_LU_S(Riscv64_register*, int rd, int rs1);
+void fcvt_S_L(Riscv64_register*, int rd, int rs1);
+void fcvt_S_LU(Riscv64_register*, int rd, int rs1);
 
 
 /*********************************************/
@@ -314,9 +332,17 @@ void fcvt_WU_D(Riscv64_register*, int rd, int rs1); // double-precision fp   -> 
 void fcvt_D_W(Riscv64_register*, int rd, int rs1);  // signed word(32-bit)   -> double-precision fp
 void fcvt_D_WU(Riscv64_register*, int rd, int rs1); // unsigned word(32-bit) -> double-precision fp
 
+void fsgnj_D(Riscv64_register*, int rd, int rs1, int rs2);
+void fsgnjn_D(Riscv64_register*, int rd, int rs1, int rs2);
+void fsgnjx_D(Riscv64_register*, int rd, int rs1, int rs2);
+
+void fmv_X_D(Riscv64_register*, int rd, int rs1, int rs2);
+void fmv_D_X(Riscv64_register*, int rd, int rs1, int rs2);
+
 /* Compare */
 void feq_D(Riscv64_register*, int rd, int rs1, int rs2); // ==
 void flt_D(Riscv64_register*, int rd, int rs1, int rs2); // <
 void fle_D(Riscv64_register*, int rd, int rs1, int rs2); // <=
 
 #endif
+
