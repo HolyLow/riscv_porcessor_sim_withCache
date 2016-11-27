@@ -33,6 +33,7 @@ extern int EXIT_HAPPENED;
 extern bool debug_flag;
 extern unsigned long int pause_addr;
 
+bool to_count = FALSE;
 
 /*********************************************/
 /*                                           */
@@ -173,6 +174,19 @@ void load_program(Elf64_Ehdr* elf_header, Riscv64_register* riscv_register, Risc
 instruction fetch(Riscv64_memory* riscv_memory, Riscv64_register* riscv_register)
 {
 	byte* virtual_addr_pc = (byte*) get_register_pc(riscv_register);
+
+	//printf("%x\n", virtual_addr_pc);
+	// main start
+	if(virtual_addr_pc == 0x0001044c)
+	{
+		to_count = TRUE;
+	}
+	// main end
+	else if(virtual_addr_pc == 0x000105b0)
+	{
+		to_count = FALSE;
+	}
+
 	instruction inst = (instruction) get_memory_reg64(riscv_memory, virtual_addr_pc);
 	register_pc_self_increase(riscv_register);
 
@@ -181,7 +195,7 @@ instruction fetch(Riscv64_memory* riscv_memory, Riscv64_register* riscv_register
 	#endif
 
 	//check whether to debug
-	if((long)virtual_addr_pc == (long)pause_addr)
+	if((int)virtual_addr_pc == (int)pause_addr)
 	{
 		debug_flag = TRUE;
 	}
@@ -218,6 +232,7 @@ void decode(Riscv64_decoder* riscv_decoder, instruction inst)
 	switch (GetINSTYPE(riscv_decoder))
 	{
 		case R_TYPE:
+		case R4_TYPE:
 			break;
 		case I_TYPE:
 			riscv_decoder->immediate = I_IMM(inst);
@@ -251,6 +266,9 @@ void execute(Riscv64_decoder* riscv_decoder,
 	{
 		case R_TYPE:
 			R_execute(riscv_decoder, riscv_register, riscv_memory);
+			break;
+		case R4_TYPE:
+		//	R4_execute(riscv_decoder, riscv_register, riscv_memory);
 			break;
 		case I_TYPE:
 			I_execute(riscv_decoder, riscv_register, riscv_memory);
@@ -350,8 +368,8 @@ int main(int argc, char const *argv[])
 		//load program
 		load_program(elf_header, riscv_register, riscv_memory);
 
-		int j = 100;
-		while(j && !EXIT_HAPPENED)
+		long int count = 0;
+		while(!EXIT_HAPPENED)
 		{
 			instruction inst = fetch(riscv_memory, riscv_register);
 			decode(riscv_decoder, inst);
@@ -362,9 +380,15 @@ int main(int argc, char const *argv[])
 			{
 				MY_DEBUG_MODE(riscv_register, riscv_memory);
 			}
+
+			if(to_count == TRUE)
+			{
+				count += 1;
+			}
 		}
 
 		printf("Program exits!\n");
+		printf("%ld instructions executed.\n", count);
 		// gc
 		delete_memory_system(riscv_decoder, riscv_register, riscv_memory);
 		free(buffer);

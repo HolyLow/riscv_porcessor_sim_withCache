@@ -200,7 +200,7 @@ void  set_memory_reg8(Riscv64_memory* riscv_memory, byte* virtual_addr, reg8 val
 	byte* actual_addr = get_actual_addr(riscv_memory, virtual_addr);
 	*(reg8*)actual_addr = value;
 	char* tmp_content, *tmp_block;
-	l[1].HandleRequest((uint64_t)actual_addr, sizeof(reg8), 0, tmp_content, sim_hit, sim_time, tmp_block);
+	l[1].HandleRequest((uint64_t)virtual_addr, sizeof(reg8), 0, tmp_content, sim_hit, sim_time, tmp_block);
 }
 reg8 get_memory_reg8(Riscv64_memory* riscv_memory, byte* virtual_addr)
 {
@@ -208,7 +208,7 @@ reg8 get_memory_reg8(Riscv64_memory* riscv_memory, byte* virtual_addr)
 	byte* actual_addr = get_actual_addr(riscv_memory, virtual_addr);
 
 	char* tmp_content, *tmp_block;
-	l[1].HandleRequest((uint64_t)actual_addr, sizeof(reg8), 1, tmp_content, sim_hit, sim_time, tmp_block);
+	l[1].HandleRequest((uint64_t)virtual_addr, sizeof(reg8), 1, tmp_content, sim_hit, sim_time, tmp_block);
 	return *(reg8*)actual_addr;
 }
 void  set_memory_reg16(Riscv64_memory* riscv_memory, byte* virtual_addr, reg16 value)
@@ -217,14 +217,14 @@ void  set_memory_reg16(Riscv64_memory* riscv_memory, byte* virtual_addr, reg16 v
 	byte* actual_addr = get_actual_addr(riscv_memory, virtual_addr);
 	*(reg16*)actual_addr = value;
 	char* tmp_content, *tmp_block;
-	l[1].HandleRequest((uint64_t)actual_addr, sizeof(reg16), 0, tmp_content, sim_hit, sim_time, tmp_block);
+	l[1].HandleRequest((uint64_t)virtual_addr, sizeof(reg16), 0, tmp_content, sim_hit, sim_time, tmp_block);
 }
 reg16 get_memory_reg16(Riscv64_memory* riscv_memory, byte* virtual_addr)
 {
 	check_valid_memory_virtual(riscv_memory, virtual_addr);
 	byte* actual_addr = get_actual_addr(riscv_memory, virtual_addr);
 	char* tmp_content, *tmp_block;
-	l[1].HandleRequest((uint64_t)actual_addr, sizeof(reg16), 1, tmp_content, sim_hit, sim_time, tmp_block);
+	l[1].HandleRequest((uint64_t)virtual_addr, sizeof(reg16), 1, tmp_content, sim_hit, sim_time, tmp_block);
 	return *(reg16*)actual_addr;
 }
 void  set_memory_reg32(Riscv64_memory* riscv_memory, byte* virtual_addr, reg32 value)
@@ -233,14 +233,14 @@ void  set_memory_reg32(Riscv64_memory* riscv_memory, byte* virtual_addr, reg32 v
 	byte* actual_addr = get_actual_addr(riscv_memory, virtual_addr);
 	*(reg32*)actual_addr = value;
 	char* tmp_content, *tmp_block;
-	l[1].HandleRequest((uint64_t)actual_addr, sizeof(reg32), 0, tmp_content, sim_hit, sim_time, tmp_block);
+	l[1].HandleRequest((uint64_t)virtual_addr, sizeof(reg32), 0, tmp_content, sim_hit, sim_time, tmp_block);
 }
 reg32 get_memory_reg32(Riscv64_memory* riscv_memory, byte* virtual_addr)
 {
 	check_valid_memory_virtual(riscv_memory, virtual_addr);
 	byte* actual_addr = get_actual_addr(riscv_memory, virtual_addr);
 	char* tmp_content, *tmp_block;
-	l[1].HandleRequest((uint64_t)actual_addr, sizeof(reg32), 1, tmp_content, sim_hit, sim_time, tmp_block);
+	l[1].HandleRequest((uint64_t)virtual_addr, sizeof(reg32), 1, tmp_content, sim_hit, sim_time, tmp_block);
 	return *(reg32*)actual_addr;
 }
 void  set_memory_reg64(Riscv64_memory* riscv_memory, byte* virtual_addr, reg64 value)
@@ -249,14 +249,14 @@ void  set_memory_reg64(Riscv64_memory* riscv_memory, byte* virtual_addr, reg64 v
 	byte* actual_addr = get_actual_addr(riscv_memory, virtual_addr);
 	*(reg64*)actual_addr = value;
 	char* tmp_content, *tmp_block;
-	l[1].HandleRequest((uint64_t)actual_addr, sizeof(reg64), 0, tmp_content, sim_hit, sim_time, tmp_block);
+	l[1].HandleRequest((uint64_t)virtual_addr, sizeof(reg64), 0, tmp_content, sim_hit, sim_time, tmp_block);
 }
 reg64 get_memory_reg64(Riscv64_memory* riscv_memory, byte* virtual_addr)
 {
 	check_valid_memory_virtual(riscv_memory, virtual_addr);
 	byte* actual_addr = get_actual_addr(riscv_memory, virtual_addr);
 	char* tmp_content, *tmp_block;
-	l[1].HandleRequest((uint64_t)actual_addr, sizeof(reg64), 1, tmp_content, sim_hit, sim_time, tmp_block);
+	//l[1].HandleRequest((uint64_t)virtual_addr, sizeof(reg64), 1, tmp_content, sim_hit, sim_time, tmp_block);
 	return *(reg64*)actual_addr;
 }
 
